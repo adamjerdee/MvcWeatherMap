@@ -1,0 +1,38 @@
+﻿@inject ISecretRepository SecretRepo
+@inject ISecretProtector Protector
+@{
+    string? apiKey = null;
+    var enc = await SecretRepo.GetAsync("GoogleMapsApiKey");
+    if (enc is not null) apiKey = Protector.Unprotect(enc);
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - MvcWeatherMap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+    <div class="container py-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="m-0">Google Weather Map - Click on the map to load a 7-day forecast.</h3>
+            <a class="btn btn-sm btn-outline-secondary" href="@Url.Action("ApiKey", "Admin")">API Key</a>
+        </div>
+        @RenderBody()
+    </div>
+
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/maps.js"></script>
+
+    @if (!string.IsNullOrWhiteSpace(apiKey))
+    {
+        <script src="https://maps.googleapis.com/maps/api/js?key=@apiKey&callback=initMap&v=weekly&loading=async" async defer></script>
+    }
+    else
+    {
+        <script>console.warn("Google Maps key not found in dbo.AppSecrets.");</script>
+    }
+</body>
+</html>

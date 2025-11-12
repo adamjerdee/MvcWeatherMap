@@ -1,0 +1,40 @@
+﻿@model ApiKeyViewModel
+@{
+    ViewData["Title"] = "Google Maps API Key";
+}
+
+<h3>Google Maps API Key</h3>
+
+@if (!string.IsNullOrWhiteSpace(Model.Status))
+{
+    <div class="alert alert-success">@Model.Status</div>
+}
+@if (!string.IsNullOrWhiteSpace(Model.Error))
+{
+    <div class="alert alert-danger">@Model.Error</div>
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <p>
+            <strong>Current key (masked):</strong>
+            @(string.IsNullOrWhiteSpace(Model.CurrentMasked) ? "(none set)" : Model.CurrentMasked)
+        </p>
+
+        <form asp-action="ApiKey" asp-controller="Admin" method="post" novalidate>
+            @Html.AntiForgeryToken()   <!-- IMPORTANT -->
+            <div class="mb-3">
+                <label asp-for="NewKey" class="form-label">New API Key</label>
+                <input asp-for="NewKey" class="form-control" autocomplete="off" />
+                <span asp-validation-for="NewKey" class="text-danger"></span>
+                <div class="form-text">Stored encrypted in SQL (dbo.AppSecrets).</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Key</button>  <!-- type=submit -->
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

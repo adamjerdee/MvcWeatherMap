@@ -1,0 +1,35 @@
+-- AppSecrets table + sprocs
+IF OBJECT_ID('dbo.AppSecrets','U') IS NULL
+BEGIN
+  CREATE TABLE dbo.AppSecrets(
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    [Name] NVARCHAR(100) NOT NULL UNIQUE,
+    EncryptedValue VARBINARY(MAX) NOT NULL,
+    CreatedAt DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    UpdatedAt DATETIME2 NULL
+  );
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.AppSecrets_Set
+  @Name NVARCHAR(100),
+  @EncryptedValue VARBINARY(MAX)
+AS
+BEGIN
+  SET NOCOUNT ON;
+  IF EXISTS(SELECT 1 FROM dbo.AppSecrets WHERE [Name]=@Name)
+    UPDATE dbo.AppSecrets SET EncryptedValue=@EncryptedValue, UpdatedAt=SYSUTCDATETIME()
+    WHERE [Name]=@Name;
+  ELSE
+    INSERT dbo.AppSecrets([Name],EncryptedValue) VALUES(@Name,@EncryptedValue);
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.AppSecrets_Get
+  @Name NVARCHAR(100)
+AS
+BEGIN
+  SET NOCOUNT ON;
+  SELECT TOP 1 EncryptedValue FROM dbo.AppSecrets WHERE [Name]=@Name;
+END
+GO
