@@ -5,7 +5,7 @@ When you click on any point, it retrieves and displays a 7-day forecast from the
 The application also includes an **Admin page** where you can securely store and manage your **Google Maps API key**, which is saved encrypted in SQL Server.
 
 <p align="center">
-  <img src="./MVC%20Google%Weathermap.png" alt="Screenshot of MVC Google Weathermap" width="700">
+  <img src="./MVC Google Weathermap.png" alt="Screenshot of MVC Google Weathermap" width="700">
 </p>
 ---
 
