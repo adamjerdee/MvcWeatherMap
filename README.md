@@ -4,6 +4,9 @@ MvcWeatherMap is an ASP.NET Core MVC web application that displays an interactiv
 When you click on any point, it retrieves and displays a 7-day forecast from the **U.S. National Weather Service (NWS)**.  
 The application also includes an **Admin page** where you can securely store and manage your **Google Maps API key**, which is saved encrypted in SQL Server.
 
+<p align="center">
+  <img src="./MVC%20Google%Weathermap.png" alt="Screenshot of MVC Google Weathermap" width="700">
+</p>
 ---
 
 ## 🌐 Features
